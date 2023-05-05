@@ -17,12 +17,32 @@ export async function userRoutes(app: FastifyInstance) {
       }
 
       // Check if the user already exists
-      const existingUsers = await streamChat.queryUsers({ id })
+      const existingUsers = await streamChat.queryUsers({ id });
       if (existingUsers.users.length > 0) {
-        return res.status(400).send("User ID Already Exists")
+        return res.status(400).send("User ID Already Exists");
       }
 
       streamChat.upsertUser({ id, name, image });
     }
   );
+  app.post<{ Body: { id: string } }>("/login", async (req, res) => {
+    const { id } = req.body;
+
+    if (id === null || id === "") {
+      return res.status(400).send();
+    }
+
+    const {
+      users: [user],
+    } = await streamChat.queryUsers({ id });
+
+    if (user == null) return res.status(401).send();
+
+    const token = streamChat.createToken(id);
+
+    return {
+      token,
+      user: { name: user.name, id: user.id, image: user.image },
+    };
+  });
 }
