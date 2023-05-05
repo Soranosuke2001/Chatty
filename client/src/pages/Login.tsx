@@ -8,18 +8,19 @@ export function Login() {
   const { login, user } = useAuth();
   const usernameRef = useRef<HTMLInputElement>(null);
 
-  if (user !== null)
-    function handleSubmit(e: FormEvent) {
-      e.preventDefault();
+  if (user != null) return <Navigate to="/" />;
+  
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
 
-      if (login.isLoading) return <Navigate to="/" />;
+    if (login.isLoading) return;
 
-      const username = usernameRef.current?.value;
+    const username = usernameRef.current?.value;
 
-      if (username == null || username == "") return;
+    if (username == null || username == "") return;
 
-      login.mutate(username);
-    }
+    login.mutate(username);
+  }
 
   return (
     <>
