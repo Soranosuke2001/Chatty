@@ -7,6 +7,8 @@ import {
   MessageInput,
   MessageList,
   ChannelHeader,
+  ChannelListMessengerProps,
+  useChatContext,
 } from "stream-chat-react";
 import { useLoggedInAuth } from "../context/AuthContext";
 
@@ -17,7 +19,11 @@ export function Home() {
 
   return (
     <Chat client={streamChat}>
-      <ChannelList filters={{ members: { $in: [user.id] } }} />
+      <ChannelList
+        List={Channels}
+        sendChannelsToList
+        filters={{ members: { $in: [user.id] } }}
+      />
       <Channel>
         <Window>
           <ChannelHeader />
@@ -27,4 +33,12 @@ export function Home() {
       </Channel>
     </Chat>
   );
+}
+
+function Channels({ loadedChannels }: ChannelListMessengerProps) {
+  const { setActiveChannel, channel: activeChannel } = useChatContext()
+
+  return <div className='w-60 flex flex-col gap-4 m-3 h-full'>
+    
+  </div>
 }
