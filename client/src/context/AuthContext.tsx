@@ -29,6 +29,10 @@ export function useAuth() {
   return useContext(Context) as AuthContext;
 }
 
+export function useLoggedInAuth() {
+  return useContext(Context) as AuthContext & Required<Pick<AuthContext, "user">>;
+}
+
 type AuthProviderProps = {
   children: ReactNode;
 };
